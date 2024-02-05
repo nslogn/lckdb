@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,17 @@ public class EquipoDAO extends GenericDAOImpl<Equipo> {
 		return count;
 	}
 
+	public void updateBudgetClasificacion(Equipo equipo, int puesto) {
+		BigDecimal resultado = equipo.getPresupuesto().add(equipo.getIngresosPatrocinios())
+				.subtract(equipo.getGastosIniciales());
+		if (puesto == 1 || puesto == 2 || puesto == 3)
+			resultado.add(new BigDecimal(300000));
+		else
+			resultado.add(new BigDecimal(10000));
+		equipo.setPresupuesto(resultado);
+		update(equipo);
+	}
+
 	public int removerJugadores(Equipo equipo, List<Jugador> jugadores) {
 		int count = 0;
 		for (Jugador j : jugadores) {
@@ -119,5 +131,12 @@ public class EquipoDAO extends GenericDAOImpl<Equipo> {
 		Query<String> query = session.createQuery(hql, String.class);
 		query.setParameter("equipo", equipo);
 		return query.getResultList();
+	}
+
+	public BigDecimal getBudget(String teamName) {
+		String hql = "SELECT e.presupuesto FROM Equipo e WHERE e.nombre = :teamName";
+		Query<BigDecimal> query = session.createQuery(hql, BigDecimal.class);
+		query.setParameter("teamName", teamName);
+		return query.uniqueResult();
 	}
 }

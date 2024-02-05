@@ -44,6 +44,7 @@ public class SimulationUtil {
 		for (Partido p : partidos) {
 			Equipo e1 = EquipoDS.getEquipoByName(p.getEquipoLocal());
 			Equipo e2 = EquipoDS.getEquipoByName(p.getEquipoVisitante());
+			p.setJornada(numJornada);
 			playPartido(e1, e2, p, jornadaSession);
 		}
 	}
@@ -57,9 +58,9 @@ public class SimulationUtil {
 	}
 
 	public static Jugador getRandomPlayer(Equipo e1) {
-//		int size = e1.getJugadores().toArray().length;
-//		int randomIndex = rand.nextInt() % size;
-		return e1.getJugadores().toArray(new Jugador[1])[0];
+		int size = e1.getJugadores().size();
+		int randomIndex = rand.nextInt(size);
+		return e1.getJugadores().toArray(new Jugador[size])[randomIndex];
 	}
 
 	public static void realizarCargaDeDatos() {

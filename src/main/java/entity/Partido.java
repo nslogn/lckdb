@@ -22,9 +22,12 @@ public class Partido {
 	@Column(name = "visit_team_name")
 	private String equipoVisitante;
 
+	@Column(name = "match_day")
+	private Integer jornada;
+	
 	@OneToOne(mappedBy = "partido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private PartidoResults partidoResult;
-
+	
 	@Column(name = "mvp_name")
 	private String mejorJugadorNombre;
 
@@ -98,6 +101,14 @@ public class Partido {
 
 	public void setEquipoVisitanteEntity(Equipo equipoVisitanteEntity) {
 		this.equipoVisitanteEntity = equipoVisitanteEntity;
+	}
+
+	public Integer getJornada() {
+		return jornada;
+	}
+
+	public void setJornada(Integer jornada) {
+		this.jornada = jornada;
 	}
 
 	@Override

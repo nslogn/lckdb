@@ -1,8 +1,10 @@
 package dao;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import entity.Equipo;
 import entity.Jugador;
@@ -53,4 +55,12 @@ public class PartidoDAO extends GenericDAOImpl<Partido> {
 		DaoProvider.getJugadorDAO(session).update(jug);
 	}
 
+	public List<Partido> getPartidoJornada3(String teamName) {
+		String hql = "SELECT p " + "FROM Partido p "
+				+ "WHERE (p.equipoLocal = :teamName OR p.equipoVisitante = :teamName) " + "AND p.jornada = 3";
+
+		Query<Partido> query = session.createQuery(hql, Partido.class);
+		query.setParameter("teamName", teamName);
+		return query.getResultList();
+	}
 }

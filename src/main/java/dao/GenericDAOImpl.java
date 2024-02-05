@@ -66,10 +66,10 @@ public class GenericDAOImpl<T> implements GenericDao<T> {
 		return Optional.ofNullable(session.find(persistentClass, id));
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public List<T> findAll() {
-		return session.createQuery("select _it_ from" + persistentClass.getSimpleName() + " _it_").getResultList();
+		String queryString = "SELECT _it_ FROM " + persistentClass.getSimpleName() + " _it_";
+		return session.createQuery(queryString, persistentClass).getResultList();
 	}
 
 	public static void setSession(Session session_) {
