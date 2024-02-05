@@ -7,31 +7,30 @@ import java.util.Map;
 
 import entity.Equipo;
 
+/**
+ * Provides access to team information stored in a static map and list. Allows
+ * retrieval of teams by name.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class EquipoDS {
-    private static final Map<String, Equipo> EQUIPOS = new HashMap<>();
-    private static final List<Equipo> EQUIPOS_LIST = Arrays.asList(
-        new Equipo("Dplus KIA", 0, 5), 
-        new Equipo("DRX", 0, 5),
-        new Equipo("FearX", 0, 6), 
-        new Equipo("Gen.G", 0, 5), 
-        new Equipo("Hanwha Life", 0, 5),
-        new Equipo("KT Rolster", 0, 5), 
-        new Equipo("Kwangdong Freecs", 0, 6), 
-        new Equipo("NS RedForce", 0, 6),
-        new Equipo("OK BRION", 0, 5), 
-        new Equipo("T1", 0, 5)
-    );
+	private static final Map<String, Equipo> EQUIPOS = new HashMap<>();
+	private static final List<Equipo> EQUIPOS_LIST = Arrays.asList(new Equipo("Dplus KIA", 0, 5),
+			new Equipo("DRX", 0, 5), new Equipo("FearX", 0, 6), new Equipo("Gen.G", 0, 5),
+			new Equipo("Hanwha Life", 0, 5), new Equipo("KT Rolster", 0, 5), new Equipo("Kwangdong Freecs", 0, 6),
+			new Equipo("NS RedForce", 0, 6), new Equipo("OK BRION", 0, 5), new Equipo("T1", 0, 5));
 
-    static {
-        for (Equipo equipo : EQUIPOS_LIST) {
-            EQUIPOS.put(equipo.getNombre().toUpperCase(), equipo);
-        }
-    }
+	static {
+		for (Equipo equipo : EQUIPOS_LIST) {
+			EQUIPOS.put(equipo.getNombre().toUpperCase(), equipo);
+		}
+	}
 
-    public static Equipo getEquipoByName(String name) {
-        return EQUIPOS.get(name.toUpperCase());
-    }
-    public static List<Equipo> getEquipos() {
-        return EQUIPOS_LIST;
-    }
+	public static Equipo getEquipoByName(String name) {
+		return EQUIPOS.get(name.toUpperCase());
+	}
+
+	public static List<Equipo> getEquipos() {
+		return EQUIPOS_LIST;
+	}
 }

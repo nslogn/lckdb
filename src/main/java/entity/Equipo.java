@@ -8,6 +8,14 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a team entity mapped to the "team" table. Contains attributes such
+ * as id, name, points, players count, budget, initial expenses, sponsorship
+ * income, previous position, current position, and associated entities such as
+ * players, sponsors, competitions, coach, and matches.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "team")
 public class Equipo {

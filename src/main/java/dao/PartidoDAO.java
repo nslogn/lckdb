@@ -11,6 +11,15 @@ import entity.PartidoResults;
 import utils.DaoProvider;
 import utils.SimulationUtil;
 
+/**
+ * Represents a Data Access Object (DAO) for managing operations related to
+ * Partido entity.
+ * 
+ * This class extends the GenericDAOImpl and provides additional methods
+ * specific to Partido entities.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class PartidoDAO extends GenericDAOImpl<Partido> {
 
 	public PartidoDAO(Session session) {

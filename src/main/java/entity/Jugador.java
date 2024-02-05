@@ -4,6 +4,13 @@ import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a player entity mapped to the "player" table. Contains attributes
+ * such as id, name, nationality, birthdate, MVP count, signing date, contract
+ * end date, and an associated team.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "player")
 @NamedQuery(name = "Jugador.findPlayersSignedAfter", query = "SELECT j FROM Jugador j WHERE j.fechaFirma > :startDate")

@@ -9,6 +9,14 @@ import dao.PartidoDAO;
 import dao.PartidoResultsDAO;
 import dao.PatrocinadorDAO;
 
+/**
+ * Provides access to Data Access Objects (DAOs) for managing various entities.
+ * 
+ * Note: Instances of this class are typically used to access DAO instances
+ * throughout the application.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class DaoProvider {
 	private static JugadorDAO jugadorDAO;
 	private static EquipoDAO equipoDAO;
@@ -30,66 +38,31 @@ public class DaoProvider {
 	}
 
 	public static JugadorDAO getJugadorDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return jugadorDAO;
-//		else if (session.equals(currentSession))
-//			return jugadorDAO;
-//		currentSession = session;
-//		return new JugadorDAO(session);
-//		currentSession = session;
 		JugadorDAO.setSession(session);
 		return jugadorDAO;
 	}
 
 	public static EquipoDAO getEquipoDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return equipoDAO;
-//		else if (session.equals(currentSession))
-//			return equipoDAO;
-//		currentSession = session;
-//		return new EquipoDAO(currentSession);
 		EquipoDAO.setSession(session);
 		return equipoDAO;
 	}
 
 	public static PatrocinadorDAO getPatrocinadorDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return patrocinadorDAO;
-//		currentSession = session;
-//		return new PatrocinadorDAO(currentSession);
 		PatrocinadorDAO.setSession(session);
 		return patrocinadorDAO;
 	}
 
 	public static CompeticionDAO getCompeticionDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return competicionDAO;
-//		else if (session.equals(currentSession))
-//			return competicionDAO;
-//		currentSession = session;
-//		return new CompeticionDAO(currentSession);
 		CompeticionDAO.setSession(session);
 		return competicionDAO;
 	}
 
 	public static PartidoDAO getPartidoDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return partidoDAO;
-//		else if (session.equals(currentSession))
-//			return partidoDAO;
-//		currentSession = session;
-//		return new PartidoDAO(currentSession);
 		PartidoDAO.setSession(session);
 		return partidoDAO;
 	}
 
 	public static PartidoResultsDAO getPartidoResultsDAO(Session session) {
-//		if (session.equals(sessionInicial))
-//			return partidoResultsDAO;
-//		else if (session.equals(currentSession))
-//			return partidoResultsDAO;
-//		currentSession = session;
-//		return new PartidoResultsDAO(currentSession);
 		PartidoResultsDAO.setSession(session);
 		return partidoResultsDAO;
 	}

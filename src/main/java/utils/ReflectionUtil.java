@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Utility methods for Hibernate Genereic DAO.
- * Solution taken from: 
+ * Utility methods for Hibernate Genereic DAO. Solution taken from:
  * "https://www.artima.com/weblogs/viewpost.jsp?thread=208860"
- * @author s
+ * 
+ * @author --
  */
 public class ReflectionUtil {
 	/**

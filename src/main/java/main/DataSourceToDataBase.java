@@ -13,6 +13,11 @@ import entity.Equipo;
 import entity.Jugador;
 import entity.Patrocinador;
 
+/**
+ * Class for setting the initial values from the data sources classes
+ * 
+ * @author Sirpa_Jesus
+ */
 public class DataSourceToDataBase {
 	private static final Random rand = new Random();
 	private static final String COMPETITION_NAME = "LCK";

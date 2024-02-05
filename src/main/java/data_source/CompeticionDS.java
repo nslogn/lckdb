@@ -6,6 +6,12 @@ import java.util.Map;
 
 import entity.Competicion;
 
+/**
+ * Provides access to competition information stored in a static map. Allows
+ * retrieval of start dates, duration, and team count.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class CompeticionDS {
 	private static final Map<String, Competicion> COMPETICION = new HashMap<>();
 

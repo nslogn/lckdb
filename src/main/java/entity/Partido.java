@@ -2,6 +2,13 @@ package entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a match entity mapped to the "matchGame" table. Contains
+ * attributes such as id, names of local and visiting teams, the best player's
+ * name, and associated entities for match results and teams.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "matchGame")
 public class Partido {
@@ -14,19 +21,19 @@ public class Partido {
 
 	@Column(name = "visit_team_name")
 	private String equipoVisitante;
-	
+
 	@OneToOne(mappedBy = "partido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private PartidoResults partidoResult;
-	
+
 	@Column(name = "mvp_name")
 	private String mejorJugadorNombre;
 
 	@ManyToOne
-	@JoinColumn(name = "home_team_id", referencedColumnName = "id")//, nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "home_team_id", referencedColumnName = "id")
 	private Equipo equipoLocalEntity;
 
 	@ManyToOne
-	@JoinColumn(name = "away_team_id", referencedColumnName = "id")//, nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "away_team_id", referencedColumnName = "id")
 	private Equipo equipoVisitanteEntity;
 
 	public Partido() {
@@ -36,7 +43,7 @@ public class Partido {
 		this.equipoLocal = equipoLocal;
 		this.equipoVisitante = equipoVisitante;
 	}
-	
+
 	public Long getId() {
 		return Id;
 	}

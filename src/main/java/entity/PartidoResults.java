@@ -2,6 +2,13 @@ package entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents match results entity mapped to the "matchGame_results" table.
+ * Contains attributes such as id, scores for local and visiting teams, and an
+ * associated match entity.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "matchGame_results")
 public class PartidoResults {
@@ -16,7 +23,7 @@ public class PartidoResults {
 	private Integer golesVisitante;
 
 	@OneToOne
-	@JoinColumn(name = "partido_id", referencedColumnName = "id")//, nullable = false, updatable = false, insertable = false)
+	@JoinColumn(name = "partido_id", referencedColumnName = "id")
 	private Partido partido;
 
 	public PartidoResults() {

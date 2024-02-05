@@ -14,6 +14,12 @@ import entity.Jugador;
 import utils.HibernateUtils;
 import utils.SimulationUtil;
 
+/**
+ * Class for executing the simulation. This class tries to recreate the
+ * simulation of the matches for the season 2024
+ * 
+ * @author Sirpa_Jesus
+ */
 public class SimulacionMain {
 	public static void main(String[] args) {
 		SimulationUtil.realizarCargaDeDatos();
@@ -73,9 +79,9 @@ public class SimulacionMain {
 		SimulationUtil.realizarTrasapaso(traspaso, brion);
 
 		SimulationUtil.realizarComprobacionDoble(t1, brion, "POST CAMBIOS");
-		
+
 		SimulationUtil.realizarConsultas();
-		
+
 		HibernateUtils.shutdown();
 	}
 }

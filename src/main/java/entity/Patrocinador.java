@@ -6,6 +6,12 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a sponsor entity mapped to the "sponsor" table. Contains
+ * attributes such as id, name, offered budget, and associated teams.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "sponsor")
 public class Patrocinador {

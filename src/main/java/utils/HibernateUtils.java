@@ -6,6 +6,14 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/**
+ * Provides utility methods for managing Hibernate session factory.
+ * 
+ * Usage: Used to obtain the Hibernate session factory for database
+ * interactions.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class HibernateUtils {
 	private static SessionFactory sessionFactory = buildSessionFactory();
 

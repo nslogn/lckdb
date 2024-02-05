@@ -2,6 +2,12 @@ package entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a coach entity mapped to the "coach" table. Contains attributes
+ * such as id, name, and associated team.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "coach")
 public class Entrenador {

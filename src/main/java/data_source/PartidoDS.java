@@ -8,6 +8,11 @@ import java.util.Map;
 
 import entity.Partido;
 
+/**
+ * Provides access to match information stored in a static map and list.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class PartidoDS {
 	private static final Map<Integer, List<Partido>> PARTIDOS_MAP = new HashMap<>();
 	private static final List<Partido> PARTIDOS = Arrays.asList(

@@ -8,6 +8,15 @@ import org.hibernate.query.Query;
 import entity.Equipo;
 import entity.Patrocinador;
 
+/**
+ * Represents a Data Access Object (DAO) for managing operations related to
+ * Patrocinador entity.
+ * 
+ * This class extends the GenericDAOImpl and provides additional methods
+ * specific to patrocinador entities.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class PatrocinadorDAO extends GenericDAOImpl<Patrocinador> {
 
 	public PatrocinadorDAO(Session session) {

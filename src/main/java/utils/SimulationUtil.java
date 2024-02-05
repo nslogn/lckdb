@@ -13,6 +13,15 @@ import entity.Partido;
 import main.ConsultasCompeticion;
 import main.DataSourceToDataBase;
 
+/**
+ * Provides utility methods for simulating league competitions and managing data
+ * operations.
+ * 
+ * Usage: Provides methods for simulating league matches, managing player
+ * transfers, and performing data operations.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class SimulationUtil {
 	private static final Random rand = new Random();
 	private static List<String> clasificInicial = null;
@@ -23,9 +32,8 @@ public class SimulationUtil {
 		Integer j = 1;
 		for (String s : DaoProvider.getEquipoDAO().getClasificacion()) {
 			System.out.println(j + "- " + s);
-			int sepIndex= s.indexOf('-');
+			int sepIndex = s.indexOf('-');
 			Equipo equipo = EquipoDS.getEquipoByName(s.substring(0, sepIndex).trim());
-//			System.out.println(equipo.getNombre() + ", " + j);
 			DaoProvider.getEquipoDAO().updatePosicionActual(equipo, j);
 			j++;
 		}

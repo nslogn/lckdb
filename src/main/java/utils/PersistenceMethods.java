@@ -14,6 +14,16 @@ import entity.Equipo;
 import entity.Jugador;
 import entity.Patrocinador;
 
+/**
+ * Provides static methods for persisting entities into the database.
+ * 
+ * Usage: Provides methods for persisting various entity types into the
+ * database.
+ * 
+ * Note: Each use cases and managed by a single transaction. "A single unit of work"
+ * 
+ * @author Sirpa_Jesus
+ */
 public class PersistenceMethods {
 
 	public static void persistAllEntities() {
@@ -32,7 +42,7 @@ public class PersistenceMethods {
 				transaction.rollback();
 			}
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	public static void saveAllPatrocinadores(Session session) {
@@ -47,9 +57,9 @@ public class PersistenceMethods {
 			;
 		}
 	}
-	
+
 	public static void saveAllPartidos(Session session) {
-		
+
 	}
 
 	public static void saveAllJugadoresEquipos(Session session) {

@@ -10,6 +10,15 @@ import entity.Equipo;
 import entity.Jugador;
 import jakarta.persistence.TypedQuery;
 
+/**
+ * Represents a Data Access Object (DAO) for managing operations related to
+ * Jugador entity.
+ * 
+ * This class extends the GenericDAOImpl and provides additional methods
+ * specific to jugador entities.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class JugadorDAO extends GenericDAOImpl<Jugador> {
 
 	public JugadorDAO(Session session) {

@@ -6,6 +6,11 @@ import java.util.List;
 
 import entity.Patrocinador;
 
+/**
+ * Provides access to sponsor information stored in a static list.
+ * 
+ * @author Your_Name
+ */
 public class PatrocinadorDS {
 	private static final List<Patrocinador> PATROCINADORES = Arrays.asList(
 			new Patrocinador("Logitech G", new BigDecimal(1000)),

@@ -8,6 +8,13 @@ import org.hibernate.Session;
 
 import utils.ReflectionUtil;
 
+/**
+ * Represents a generic implementation of the GenericDao interface, allowing
+ * CRUD operations for entities of type T.
+ * 
+ * @param <T> the type of entity handled by this implementation.
+ * @author Sirpa_Jesus
+ */
 @SuppressWarnings("unchecked")
 public class GenericDAOImpl<T> implements GenericDao<T> {
 	protected static Session session;
@@ -44,7 +51,6 @@ public class GenericDAOImpl<T> implements GenericDao<T> {
 
 	@Override
 	public void delete(T entity) {
-//		session.remove(session.contains(entity) ? entity : session.merge(entity));
 		session.remove(entity);
 	}
 
@@ -65,7 +71,7 @@ public class GenericDAOImpl<T> implements GenericDao<T> {
 	public List<T> findAll() {
 		return session.createQuery("select _it_ from" + persistentClass.getSimpleName() + " _it_").getResultList();
 	}
-	
+
 	public static void setSession(Session session_) {
 		session = session_;
 	}

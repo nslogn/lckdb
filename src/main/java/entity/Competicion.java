@@ -6,6 +6,13 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a competition entity mapped to the "competition" table. Contains
+ * attributes such as id, name, creation date, matchdays count, teams count, and
+ * associated teams.
+ * 
+ * @author Sirpa_Jesus
+ */
 @Entity
 @Table(name = "competition")
 public class Competicion {
@@ -28,7 +35,7 @@ public class Competicion {
 	@ManyToMany
 	@JoinTable(name = "competition_team", joinColumns = @JoinColumn(name = "competition_id"), inverseJoinColumns = @JoinColumn(name = "team_id"))
 	private Set<Equipo> equipos = new HashSet<>();
-	
+
 	public Competicion() {
 	}
 

@@ -15,6 +15,11 @@ import utils.DaoProvider;
 import utils.HibernateUtils;
 import utils.SimulationUtil;
 
+/**
+ * Wrapper class for making the necessary queries to the database
+ * 
+ * @author Sirpa_Jesus
+ */
 public class ConsultasCompeticion {
 	public static void realizarConsultas() {
 		// CONSULTAS

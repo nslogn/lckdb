@@ -11,6 +11,15 @@ import entity.Competicion;
 import entity.Equipo;
 import entity.Jugador;
 
+/**
+ * Represents a Data Access Object (DAO) for managing operations related to
+ * Equipo entity.
+ * 
+ * This class extends the GenericDAOImpl and provides additional methods
+ * specific to Equipo entities.
+ * 
+ * @author Sirpa_Jesus
+ */
 public class EquipoDAO extends GenericDAOImpl<Equipo> {
 
 	public EquipoDAO(Session session) {
@@ -96,22 +105,19 @@ public class EquipoDAO extends GenericDAOImpl<Equipo> {
 		queryBottom.setMaxResults(3);
 		return queryBottom.getResultList();
 	}
-	
+
 	public Long contarDeportistasEnCompeticion(Competicion competicion) {
 		String hql = "SELECT COUNT(j) FROM Jugador j JOIN j.equipo e WHERE :competicion MEMBER OF e.competiciones";
-	    Query<Long> query = session.createQuery(hql, Long.class);
-	    query.setParameter("competicion", competicion);
-	    return query.getSingleResult();
+		Query<Long> query = session.createQuery(hql, Long.class);
+		query.setParameter("competicion", competicion);
+		return query.getSingleResult();
 	}
-	
+
 	public List<String> ordenarPorContribucion(Equipo equipo) {
-	    String hql = "SELECT p.nombre " +
-	                 "FROM Patrocinador p " +
-	                 "JOIN p.equipos e " +
-	                 "WHERE e = :equipo " +
-	                 "ORDER BY p.dineroOfrecido DESC";
-	    Query<String> query = session.createQuery(hql, String.class);
-	    query.setParameter("equipo", equipo);
-	    return query.getResultList();
+		String hql = "SELECT p.nombre " + "FROM Patrocinador p " + "JOIN p.equipos e " + "WHERE e = :equipo "
+				+ "ORDER BY p.dineroOfrecido DESC";
+		Query<String> query = session.createQuery(hql, String.class);
+		query.setParameter("equipo", equipo);
+		return query.getResultList();
 	}
 }
