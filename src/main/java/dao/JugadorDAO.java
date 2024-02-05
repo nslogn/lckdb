@@ -1,22 +1,51 @@
 package dao;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import entity.Equipo;
 import entity.Jugador;
-import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 public class JugadorDAO extends GenericDAOImpl<Jugador> {
 
-	public JugadorDAO(EntityManager entityManager) {
-		super(entityManager);
+	public JugadorDAO(Session session) {
+		super(session);
 		// TODO Auto-generated constructor stub
 	}
 
 	public void updateTraspaso(Jugador jugador, Equipo equipoDestino) {
 		Equipo oldTeam = jugador.getEquipo();
-		jugador.setEquipo(equipoDestino);
 		oldTeam.getJugadores().remove(jugador);
 		oldTeam.setNumeroJugadores(oldTeam.getNumeroJugadores() - 1);
+		jugador.setEquipo(equipoDestino);
 		equipoDestino.getJugadores().add(jugador);
 		equipoDestino.setNumeroJugadores(equipoDestino.getNumeroJugadores() + 1);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	public List<Object[]> countPlayersOver23ByNationality() {
+		String hql = "SELECT j.nacionalidad, COUNT(j) FROM Jugador j "
+				+ "WHERE YEAR(CURRENT_DATE) - YEAR(j.fechaDeNacimiento) > 23 " + "GROUP BY j.nacionalidad";
+		Query<Object[]> query = session.createQuery(hql);
+		return query.getResultList();
+	}
+
+	public Double getEdadPromedio(Equipo equipo) {
+		String hql = "SELECT AVG(YEAR(CURRENT_DATE) - YEAR(j.fechaDeNacimiento)) "
+				+ "FROM Jugador j WHERE j.equipo = :equipo";
+		Query<Double> query = session.createQuery(hql, Double.class);
+		query.setParameter("equipo", equipo);
+		return query.uniqueResult();
+	}
+
+	public List<Jugador> findPlayersSignedAfter(LocalDate startDate) {
+		TypedQuery<Jugador> query = session.createNamedQuery("Jugador.findPlayersSignedAfter", Jugador.class);
+		query.setParameter("startDate", startDate);
+		List<Jugador> players = query.getResultList();
+		return players;
 	}
 }

@@ -40,8 +40,9 @@ public class DataSourceToDataBase {
 	}
 
 	private static void setEquipoPatrocinadores(Equipo equipo) {
-		for (Patrocinador patrocinador : PatrocinadorDS.getPatrocinador()) {// TODO: Randomized sponsors
-			if (rand.nextBoolean()) {
+		for (Patrocinador patrocinador : PatrocinadorDS.getPatrocinador()) {
+			if (equipo.getPosicionPrevia() <= 4 && rand.nextBoolean()) {
+				equipo.setIngresosPatrocinios(equipo.getIngresosPatrocinios().add(patrocinador.getDineroOfrecido()));
 				equipo.getPatrocinadores().add(patrocinador);
 				if (!patrocinador.getEquipos().contains(equipo))
 					patrocinador.getEquipos().add(equipo);

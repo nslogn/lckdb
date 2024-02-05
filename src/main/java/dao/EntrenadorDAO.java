@@ -1,15 +1,13 @@
 package dao;
 
+import org.hibernate.Session;
+
 import entity.Entrenador;
-import jakarta.persistence.EntityManager;
 
 public class EntrenadorDAO extends GenericDAOImpl<Entrenador> {
 
-	public EntrenadorDAO(EntityManager entityManager) {
-		super(entityManager);
+	public EntrenadorDAO(Session session) {
+		super(session);
 		// TODO Auto-generated constructor stub
 	}
-
-
-
 }

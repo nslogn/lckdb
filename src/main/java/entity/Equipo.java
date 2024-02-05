@@ -1,6 +1,9 @@
 package entity;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -21,6 +24,21 @@ public class Equipo {
 	@Column(name = "players_count")
 	private Integer numeroJugadores;
 
+	@Column(name = "budget")
+	private BigDecimal presupuesto;
+
+	@Column(name = "expenses_initial")
+	private BigDecimal gastosIniciales;
+
+	@Column(name = "budget_from_sponsors")
+	private BigDecimal ingresosPatrocinios;
+
+	@Column(name = "last_season_position")
+	private Integer posicionPrevia;
+
+//	@Column(name = "current_position", columnDefinition = "INTEGER DEFAULT 0")
+	private Integer posicionActual;
+
 	@OneToMany(mappedBy = "equipo")
 	private Set<Jugador> jugadores = new HashSet<>();
 
@@ -34,6 +52,12 @@ public class Equipo {
 	@OneToOne(mappedBy = "equipo", cascade = CascadeType.ALL)
 	private Entrenador entrenador;
 
+	@OneToMany(mappedBy = "equipoVisitanteEntity")
+	private List<Partido> partidosVisitante = new ArrayList<>();
+
+	@OneToMany(mappedBy = "equipoLocalEntity")
+	private List<Partido> partidosLocal = new ArrayList<>();
+
 	public Equipo() {
 	}
 
@@ -42,6 +66,10 @@ public class Equipo {
 		this.nombre = nombre;
 		this.puntos = puntos;
 		this.numeroJugadores = numeroJugadores;
+		this.presupuesto = new BigDecimal(10000);
+		this.gastosIniciales = new BigDecimal(1000 * numeroJugadores);
+		this.posicionPrevia = (int) (Math.random() * 10) + 1;
+		this.ingresosPatrocinios = new BigDecimal(0);
 	}
 
 	public Long getId() {
@@ -106,6 +134,62 @@ public class Equipo {
 
 	public void setEntrenador(Entrenador entrenador) {
 		this.entrenador = entrenador;
+	}
+
+	public BigDecimal getPresupuesto() {
+		return presupuesto;
+	}
+
+	public void setPresupuesto(BigDecimal presupuesto) {
+		this.presupuesto = presupuesto;
+	}
+
+	public BigDecimal getGastosIniciales() {
+		return gastosIniciales;
+	}
+
+	public void setGastosIniciales(BigDecimal gastosIniciales) {
+		this.gastosIniciales = gastosIniciales;
+	}
+
+	public BigDecimal getIngresosPatrocinios() {
+		return ingresosPatrocinios;
+	}
+
+	public void setIngresosPatrocinios(BigDecimal ingresosPatrocinios) {
+		this.ingresosPatrocinios = ingresosPatrocinios;
+	}
+
+	public Integer getPosicionPrevia() {
+		return posicionPrevia;
+	}
+
+	public void setPosicionPrevia(Integer posicionPrevia) {
+		this.posicionPrevia = posicionPrevia;
+	}
+
+	public List<Partido> getPartidosVisitante() {
+		return partidosVisitante;
+	}
+
+	public void setPartidosVisitante(List<Partido> partidosVisitante) {
+		this.partidosVisitante = partidosVisitante;
+	}
+
+	public List<Partido> getPartidosLocal() {
+		return partidosLocal;
+	}
+
+	public void setPartidosLocal(List<Partido> partidosLocal) {
+		this.partidosLocal = partidosLocal;
+	}
+
+	public Integer getPosicionActual() {
+		return posicionActual;
+	}
+
+	public void setPosicionActual(Integer posicionActual) {
+		this.posicionActual = posicionActual;
 	}
 
 	@Override

@@ -24,14 +24,13 @@ public class EquipoDS {
 
     static {
         for (Equipo equipo : EQUIPOS_LIST) {
-            EQUIPOS.put(equipo.getNombre(), equipo);
+            EQUIPOS.put(equipo.getNombre().toUpperCase(), equipo);
         }
     }
 
     public static Equipo getEquipoByName(String name) {
-        return EQUIPOS.get(name);
+        return EQUIPOS.get(name.toUpperCase());
     }
-
     public static List<Equipo> getEquipos() {
         return EQUIPOS_LIST;
     }

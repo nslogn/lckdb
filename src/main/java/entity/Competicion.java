@@ -28,7 +28,7 @@ public class Competicion {
 	@ManyToMany
 	@JoinTable(name = "competition_team", joinColumns = @JoinColumn(name = "competition_id"), inverseJoinColumns = @JoinColumn(name = "team_id"))
 	private Set<Equipo> equipos = new HashSet<>();
-
+	
 	public Competicion() {
 	}
 

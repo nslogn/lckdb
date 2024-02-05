@@ -10,10 +10,18 @@
 		<property name="hibernate.connection.password">1234</property>
 		
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-		<property name="hibernate.hbm2ddl.auto">drop-and-create</property>
+		<property name="hibernate.hbm2ddl.auto">drop-and-create</property> <!-- drop-and-create -->
 
 		<property name="show_sql">false</property>
 		<property name="format_sql">true</property>
 		
+		<!-- Mapeo de entidades -->
+		<mapping class="entity.Equipo" />
+		<mapping class="entity.Patrocinador" />
+		<mapping class="entity.Competicion" />
+		<mapping class="entity.Jugador" />
+		<mapping class="entity.Partido" />
+		<mapping class="entity.PartidoResults"/>
+		<mapping class="entity.Entrenador" />
 	</session-factory>
 </hibernate-configuration>

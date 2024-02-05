@@ -12,6 +12,8 @@ public interface GenericDao<T> {
 
 	void update(T entity);
 
+	void updateAll(Collection<T> entities);
+
 	void delete(T entity);
 
 	void deleteAll(Collection<T> entities);

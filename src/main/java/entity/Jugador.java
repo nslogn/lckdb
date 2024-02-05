@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "player")
+@NamedQuery(name = "Jugador.findPlayersSignedAfter", query = "SELECT j FROM Jugador j WHERE j.fechaFirma > :startDate")
 public class Jugador {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

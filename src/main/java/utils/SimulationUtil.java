@@ -3,46 +3,62 @@ package utils;
 import java.util.List;
 import java.util.Random;
 
+import org.hibernate.Session;
+
 import data_source.EquipoDS;
 import data_source.PartidoDS;
 import entity.Equipo;
 import entity.Jugador;
 import entity.Partido;
+import main.ConsultasCompeticion;
 import main.DataSourceToDataBase;
 
 public class SimulationUtil {
 	private static final Random rand = new Random();
+	private static List<String> clasificInicial = null;
+	private static List<String> clasificMitad = null;
+	private static List<String> clasificFinal = null;
 
 	public static void getClasificaion() {
-		int j = 1;
+		Integer j = 1;
 		for (String s : DaoProvider.getEquipoDAO().getClasificacion()) {
 			System.out.println(j + "- " + s);
+			int sepIndex= s.indexOf('-');
+			Equipo equipo = EquipoDS.getEquipoByName(s.substring(0, sepIndex).trim());
+//			System.out.println(equipo.getNombre() + ", " + j);
+			DaoProvider.getEquipoDAO().updatePosicionActual(equipo, j);
 			j++;
 		}
 	}
 
-	public static void playJornada(int numJornada) {
+	public static void playJornada(int numJornada, Session jornadaSession) {
 		List<Partido> partidos = PartidoDS.getPartidosByJornada(numJornada);
 		for (Partido p : partidos) {
-			Equipo e1 = EquipoDS.getEquipoByName(p.getLocal());
-			Equipo e2 = EquipoDS.getEquipoByName(p.getVisitante());
-			playPartido(e1, e2);
+			Equipo e1 = EquipoDS.getEquipoByName(p.getEquipoLocal());
+			Equipo e2 = EquipoDS.getEquipoByName(p.getEquipoVisitante());
+			playPartido(e1, e2, p, jornadaSession);
 		}
 	}
 
-	private static void playPartido(Equipo e1, Equipo e2) {
+	private static void playPartido(Equipo e1, Equipo e2, Partido partido, Session session) {
 		if (rand.nextBoolean()) {
-			DaoProvider.getEquipoDAO().updatePuntos(e1, e1.getPuntos() + 3);
+			DaoProvider.getPartidoDAO().setMatchResults(e1, e2, partido, session, true);
 		} else {
-			DaoProvider.getEquipoDAO().updatePuntos(e2, e2.getPuntos() + 3);
+			DaoProvider.getPartidoDAO().setMatchResults(e1, e2, partido, session, false);
 		}
+	}
+
+	public static Jugador getRandomPlayer(Equipo e1) {
+//		int size = e1.getJugadores().toArray().length;
+//		int randomIndex = rand.nextInt() % size;
+		return e1.getJugadores().toArray(new Jugador[1])[0];
 	}
 
 	public static void realizarCargaDeDatos() {
 		DataSourceToDataBase.setEntitiesRelations();
 		PersistenceMethods.persistAllEntities();
 	}
-	
+
 	public static void realizarIncorporaciones(Equipo equipo, List<Jugador> jugadoresIncorporacion) {
 		PersistenceMethods.saveIncorporaciones(equipo, jugadoresIncorporacion);
 	}
@@ -64,6 +80,40 @@ public class SimulationUtil {
 		System.out.println("\n" + tipo + " - " + equipo1.getNombre());
 		for (Jugador j : equipo1.getJugadores()) {
 			System.out.println(equipo1.getNombre() + " - " + j.getNombre());
+		}
+	}
+
+	public static void realizarConsultas() {
+		ConsultasCompeticion.realizarConsultas();
+	}
+
+	public static void saveClasificacion(int i) {
+		if (i == 1) {
+			clasificInicial = DaoProvider.getEquipoDAO().getClasificacion();
+		} else if (i == 5) {
+			clasificMitad = DaoProvider.getEquipoDAO().getClasificacion();
+		} else if (i == 9) {
+			clasificFinal = DaoProvider.getEquipoDAO().getClasificacion();
+		}
+	}
+
+	public static List<String> getSavedClasiInicial() {
+		return clasificInicial;
+	}
+
+	public static List<String> getSavedClasiMitad() {
+		return clasificMitad;
+	}
+
+	public static List<String> getSavedClasiFinal() {
+		return clasificFinal;
+	}
+
+	public static void printClasificacion(List<String> clasificacion) {
+		int j = 1;
+		for (String s : clasificacion) {
+			System.out.println(j + "- " + s);
+			j++;
 		}
 	}
 }

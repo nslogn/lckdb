@@ -2,6 +2,9 @@ package utils;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import data_source.CompeticionDS;
 import data_source.EquipoDS;
 import data_source.JugadorDS;
@@ -10,45 +13,54 @@ import entity.Competicion;
 import entity.Equipo;
 import entity.Jugador;
 import entity.Patrocinador;
-import jakarta.persistence.EntityTransaction;
 
 public class PersistenceMethods {
 
 	public static void persistAllEntities() {
-		EntityTransaction transaction = JPAUtils.getEntityManager().getTransaction();
+		Session session = null;
+		Transaction transaction = null;
 		try {
-			transaction.begin();
-			saveAllPatrocinadores();
-			saveAllJugadoresEquipos();
-			saveAllCompeticiones();
+			session = HibernateUtils.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			saveAllPatrocinadores(session);
+			saveAllJugadoresEquipos(session);
+			saveAllCompeticiones(session);
+
 			transaction.commit();
 		} catch (Exception e) {
-			if (transaction.isActive()) {
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
 			e.printStackTrace();
+		} 
+	}
+
+	public static void saveAllPatrocinadores(Session session) {
+		for (Patrocinador p : PatrocinadorDS.getPatrocinador()) {
+			DaoProvider.getPatrocinadorDAO(session).save(p);
+		}
+	}
+
+	public static void saveAllCompeticiones(Session session) {
+		for (Competicion p : CompeticionDS.getCompeticiones().values()) {
+			DaoProvider.getCompeticionDAO(session).save(p);
+			;
 		}
 	}
 	
-	public static void saveAllPatrocinadores() {
-		for (Patrocinador p : PatrocinadorDS.getPatrocinador())
-			DaoProvider.getPatrocinadorDAO().save(p);
+	public static void saveAllPartidos(Session session) {
+		
 	}
 
-	public static void saveAllCompeticiones() {
-		for (Competicion p : CompeticionDS.getCompeticiones().values())
-			DaoProvider.getCompeticionDAO().save(p);
-	}
-
-	public static void saveAllJugadoresEquipos() {
+	public static void saveAllJugadoresEquipos(Session session) {
 		List<Jugador> jugadores = JugadorDS.getJugadores();
 		int indexPlayers = 0;
 		int countPlayers = 0;
 		for (Equipo equipo : EquipoDS.getEquipos()) {
-			DaoProvider.getEquipoDAO().save(equipo);
+			DaoProvider.getEquipoDAO(session).save(equipo);
 			countPlayers = 0;
 			while (indexPlayers < jugadores.size() && countPlayers < equipo.getNumeroJugadores()) {
-				DaoProvider.getJugadorDAO().save(jugadores.get(indexPlayers));
+				DaoProvider.getJugadorDAO(session).save(jugadores.get(indexPlayers));
 				indexPlayers++;
 				countPlayers++;
 			}
@@ -56,60 +68,82 @@ public class PersistenceMethods {
 	}
 
 	public static void saveIncorporaciones(Equipo equipo, List<Jugador> jugadoresIncorporados) {
-		EntityTransaction incorporacionesTransaction = JPAUtils.getEntityManager().getTransaction();
+		Session incorporacionesTransaction = null;
+		Transaction transaction = null;
 		try {
-			incorporacionesTransaction.begin();
-			int numIncorporaciones = DaoProvider.getEquipoDAO().addNuevosJugadores(equipo, jugadoresIncorporados);
+			incorporacionesTransaction = HibernateUtils.getSessionFactory().openSession();
+			transaction = incorporacionesTransaction.beginTransaction();
+			int numIncorporaciones = DaoProvider.getEquipoDAO(incorporacionesTransaction).addNuevosJugadores(equipo,
+					jugadoresIncorporados);
 			equipo.setNumeroJugadores(equipo.getNumeroJugadores() + numIncorporaciones);
-			DaoProvider.getJugadorDAO().saveAll(jugadoresIncorporados);
-			DaoProvider.getEquipoDAO().update(equipo);
-			incorporacionesTransaction.commit();
+			DaoProvider.getJugadorDAO(incorporacionesTransaction).saveAll(jugadoresIncorporados);
+			DaoProvider.getEquipoDAO(incorporacionesTransaction).update(equipo);
+
+			transaction.commit();
 		} catch (Exception e) {
-			if (incorporacionesTransaction.isActive()) {
-				incorporacionesTransaction.rollback();
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
 			}
 			System.err.println("Error al realizar las nuevas incorporaciones :" + e.getMessage());
 			System.err.println(jugadoresIncorporados);
 			e.printStackTrace();
+		} finally {
+			if (incorporacionesTransaction != null && incorporacionesTransaction.isOpen()) {
+				incorporacionesTransaction.close();
+			}
 		}
 	}
 
 	public static void deleteJugadores(Equipo equipo, List<Jugador> jugadoresRetirados) {
-		EntityTransaction retirosTransaction = JPAUtils.getEntityManager().getTransaction();
+		Session retirosSession = null;
+		Transaction retirosTransaction = null;
 		try {
-			retirosTransaction.begin();
-			int numRetirados = DaoProvider.getEquipoDAO().removerJugadores(equipo, jugadoresRetirados);
+			retirosSession = HibernateUtils.getSessionFactory().openSession();
+			retirosTransaction = retirosSession.beginTransaction();
+			int numRetirados = DaoProvider.getEquipoDAO(retirosSession).removerJugadores(equipo, jugadoresRetirados);
 			equipo.setNumeroJugadores(equipo.getNumeroJugadores() - numRetirados);
-			DaoProvider.getJugadorDAO().deleteAll(jugadoresRetirados);
-			DaoProvider.getEquipoDAO().update(equipo);
+			DaoProvider.getJugadorDAO(retirosSession).deleteAll(jugadoresRetirados);
+			DaoProvider.getEquipoDAO(retirosSession).update(equipo);
+
 			retirosTransaction.commit();
 		} catch (Exception e) {
-			if (retirosTransaction.isActive()) {
+			if (retirosTransaction != null && retirosTransaction.isActive()) {
 				retirosTransaction.rollback();
 			}
 			System.err.println("Error al realizar las retiradas :" + e.getMessage());
 			System.err.println(jugadoresRetirados);
 			e.printStackTrace();
+		} finally {
+			if (retirosSession != null && retirosSession.isOpen()) {
+				retirosSession.close();
+			}
 		}
 	}
-	
+
 	public static void updateTraspaso(Jugador jugador, Equipo equipoDestino) {
-		EntityTransaction traspasoTransaction = JPAUtils.getEntityManager().getTransaction();
+		Session traspasoSession = null;
+		Transaction traspasoTransaction = null;
 		try {
-			traspasoTransaction.begin();
+			traspasoSession = HibernateUtils.getSessionFactory().openSession();
+			traspasoTransaction = traspasoSession.beginTransaction();
 			Equipo oldEquipo = jugador.getEquipo();
-			DaoProvider.getJugadorDAO().updateTraspaso(jugador, equipoDestino);
-			DaoProvider.getJugadorDAO().update(jugador);
-			DaoProvider.getEquipoDAO().update(oldEquipo);
-			DaoProvider.getEquipoDAO().update(equipoDestino);
+			DaoProvider.getJugadorDAO(traspasoSession).updateTraspaso(jugador, equipoDestino);
+			DaoProvider.getEquipoDAO(traspasoSession).update(oldEquipo);
+			DaoProvider.getJugadorDAO(traspasoSession).update(jugador);
+//			DaoProvider.getEquipoDAO(traspasoSession).update(equipoDestino);
+
 			traspasoTransaction.commit();
 		} catch (Exception e) {
-			if (traspasoTransaction.isActive()) {
+			if (traspasoTransaction != null && traspasoTransaction.isActive()) {
 				traspasoTransaction.rollback();
 			}
 			System.err.println("Error al realizar el traspaso :" + e.getMessage());
 			System.err.println(jugador.getNombre() + " -> " + equipoDestino.getNombre());
 			e.printStackTrace();
+		} finally {
+			if (traspasoSession != null && traspasoSession.isOpen()) {
+				traspasoSession.close();
+			}
 		}
 	}
 }

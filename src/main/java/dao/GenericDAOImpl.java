@@ -4,22 +4,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.persistence.EntityManager;
+import org.hibernate.Session;
+
 import utils.ReflectionUtil;
 
 @SuppressWarnings("unchecked")
 public class GenericDAOImpl<T> implements GenericDao<T> {
-	protected final EntityManager entityManager;
+	protected static Session session;
 	protected Class<T> persistentClass = (Class<T>) ReflectionUtil
 			.getTypeArguments(GenericDAOImpl.class, this.getClass()).get(0);
 
-	public GenericDAOImpl(EntityManager entityManager) {
-		this.entityManager = entityManager;
+	public GenericDAOImpl(Session session_) {
+		session = session_;
 	}
 
 	@Override
 	public void save(T entity) {
-		entityManager.persist(entity);
+		session.persist(entity);
 	}
 
 	@Override
@@ -31,12 +32,20 @@ public class GenericDAOImpl<T> implements GenericDao<T> {
 
 	@Override
 	public void update(T entity) {
-		entityManager.merge(entity);
+		session.merge(entity);
+	}
+
+	@Override
+	public void updateAll(Collection<T> entities) {
+		for (T entity : entities) {
+			update(entity);
+		}
 	}
 
 	@Override
 	public void delete(T entity) {
-		entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
+//		session.remove(session.contains(entity) ? entity : session.merge(entity));
+		session.remove(entity);
 	}
 
 	@Override
@@ -48,12 +57,16 @@ public class GenericDAOImpl<T> implements GenericDao<T> {
 
 	@Override
 	public Optional<T> findById(Long id) {
-		return Optional.ofNullable(entityManager.find(persistentClass, id));
+		return Optional.ofNullable(session.find(persistentClass, id));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<T> findAll() {
-		return entityManager.createQuery("select _it_ from" + persistentClass.getSimpleName() + " _it_")
-				.getResultList();
+		return session.createQuery("select _it_ from" + persistentClass.getSimpleName() + " _it_").getResultList();
+	}
+	
+	public static void setSession(Session session_) {
+		session = session_;
 	}
 }

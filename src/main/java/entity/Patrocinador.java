@@ -1,5 +1,6 @@
 package entity;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,12 +16,19 @@ public class Patrocinador {
 	@Column(name = "name")
 	private String nombre;
 
+	@Column(name = "offered_budget")
+	private BigDecimal dineroOfrecido;
+
 	@ManyToMany(mappedBy = "patrocinadores")
 	private Set<Equipo> equipos = new HashSet<>();
 
-	public Patrocinador(String nombre) {
+	public Patrocinador() {
+	}
+
+	public Patrocinador(String nombre, BigDecimal dineroOfreciodo) {
 		super();
 		this.nombre = nombre;
+		this.dineroOfrecido = dineroOfreciodo;
 	}
 
 	public Long getId() {
@@ -45,6 +53,14 @@ public class Patrocinador {
 
 	public void setEquipos(Set<Equipo> equipos) {
 		this.equipos = equipos;
+	}
+
+	public BigDecimal getDineroOfrecido() {
+		return dineroOfrecido;
+	}
+
+	public void setDineroOfrecido(BigDecimal dineroOfrecido) {
+		this.dineroOfrecido = dineroOfrecido;
 	}
 
 	@Override
